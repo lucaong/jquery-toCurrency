@@ -1,6 +1,6 @@
 # jQuery-toCurrency
 
-Easily convert numbers to formatted currencies with jQuery. If you've ever used Rails' numberToCurrency you will find this familiar.
+Easily convert numbers to formatted currencies with jQuery. If you've ever used Rails' number_to_currency you will find this familiar.
 
 
 ## Usage
