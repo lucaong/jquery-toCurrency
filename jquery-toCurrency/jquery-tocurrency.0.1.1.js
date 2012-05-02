@@ -7,6 +7,7 @@
  * Licensed under the MIT license.
  */ 
 (function( $ ){
+  "use strict";
   $.toCurrency = function(val, opts) {
     var default_options = {
           precision: 2,
@@ -16,39 +17,39 @@
           format: "%u %n",
           negativeFormat: false
         },
-        val_str, sign, reverse_whole_part, decimals, whole_formatted = '';
+        val_str, sign = '', reverse_whole_part, decimals, whole_part = '', i;
     opts = $.extend(default_options, opts);
-    
-    try {
-      val_str = parseFloat(val).toFixed(opts.precision).toString();
+
+    val = parseFloat(val);
+    if(isNaN(val)) {
+      throw new Error("toCurrency error: invalid number format " + val);
     }
-    catch (e) {
-      throw new Error('toCurrency: invalid number format with value ' + val);
-      return null;
+    if (val < 0) {
+      sign = '-';
     }
 
-    sign = val_str.indexOf('-') >= 0 ? '-' : '';
-    val_str = val_str.replace('-', '');
-
+    val_str = val.toFixed(opts.precision).replace('-', '');
     reverse_whole_part = val_str.split('.')[0].split('').reverse().join('');
     decimals = (opts.precision > 0 ? opts.separator : '') + (val_str.split('.')[1] || '');
         
     for (i = 0; i < reverse_whole_part.length; i++) {
-      if (i % 3 == 0 && i != 0 && i != reverse_whole_part.length) { whole_formatted += opts.delimiter; }
-      whole_formatted += reverse_whole_part.charAt(i);
+      if (i % 3 === 0 && i !== 0) {
+        whole_part += opts.delimiter;
+      }
+      whole_part += reverse_whole_part.charAt(i);
     }
-    whole_formatted = whole_formatted.split('').reverse().join('');
+    whole_part = whole_part.split('').reverse().join('');
     
-    if (sign == '-' && opts.negativeFormat) {
-      return opts.negativeFormat.replace('%n', whole_formatted + decimals).replace('%u', opts.unit);
+    if (sign === '-' && opts.negativeFormat) {
+      return opts.negativeFormat.replace('%n', whole_part + decimals).replace('%u', opts.unit);
     } else {
-      return opts.format.replace('%n', sign + whole_formatted + decimals).replace('%u', opts.unit);
+      return opts.format.replace('%n', sign + whole_part + decimals).replace('%u', opts.unit);
     }
-  }
+  };
   
   $.fn.toCurrency = function( options ) {
     return this.each(function() {
-      $(this).html($.toCurrency($(this).text(), options))
+      $(this).html($.toCurrency($(this).text(), options));
     });
   };
 })( jQuery );
