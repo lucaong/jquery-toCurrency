@@ -8,6 +8,10 @@
  */ 
 (function( $ ){
   "use strict";
+  var reverseString = function(str) {
+    return str.split("").reverse().join("");
+  };
+
   $.extend({
     toCurrency: function( val, opts ) {
       var val_str, reverse_whole_part, decimals, i,
@@ -32,7 +36,7 @@
       }
 
       val_str = val.toFixed( opts.precision ).replace( "-", "" );
-      reverse_whole_part = val_str.split(".")[0].split("").reverse().join("");
+      reverse_whole_part = reverseString(val_str.split(".")[0]);
       decimals = ( opts.precision > 0 ? opts.separator : "" ) + ( val_str.split(".")[1] || "" );
           
       for ( i = 0; i < reverse_whole_part.length; i++ ) {
@@ -41,7 +45,7 @@
         }
         whole_part += reverse_whole_part.charAt(i);
       }
-      whole_part = whole_part.split("").reverse().join("");
+      whole_part = reverseString(whole_part);
       
       if ( sign === "-" && opts.negativeFormat ) {
         return opts.negativeFormat.replace( "%n", whole_part + decimals ).replace( "%u", opts.unit );
