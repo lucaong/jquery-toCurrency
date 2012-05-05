@@ -38,6 +38,6 @@ Both methods accept an object with configuration options as the last argument. T
 		separator: ".",         // decimal separator
 		unit: "&euro;",         // unit
 		format: "%u %n",        // format. %u is the placeholder for the unit, %n for the number
-		negativeFormat: false   // format for negative numbers. If false, id defaults to the same format as positive numbers
+		negativeFormat: false   // format for negative numbers. If false, it defaults to the same format as positive numbers
 	});
 ```
