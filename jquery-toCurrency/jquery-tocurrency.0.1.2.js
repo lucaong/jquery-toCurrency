@@ -1,7 +1,7 @@
 /*!
  * jquery-toCurrency Plugin for jQuery
  *
- * Version 0.1.1
+ * Version 0.1.2
  *
  * Copyright 2012, Luca Ongaro
  * Licensed under the MIT license.
