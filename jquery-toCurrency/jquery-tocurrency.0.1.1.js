@@ -6,9 +6,9 @@
  * Copyright 2012, Luca Ongaro
  * Licensed under the MIT license.
  */ 
-(function( $ ){
+(function( $ ) {
   "use strict";
-  var reverseString = function(str) {
+  var reverseString = function( str ) {
     return str.split("").reverse().join("");
   };
 
@@ -25,6 +25,7 @@
             format: "%u %n",
             negativeFormat: false
           };
+
       opts = $.extend( default_options, opts );
 
       val = parseFloat(val);
@@ -36,17 +37,17 @@
       }
 
       val_str = val.toFixed( opts.precision ).replace( "-", "" );
-      reverse_whole_part = reverseString(val_str.split(".")[0]);
+      reverse_whole_part = reverseString( val_str.split(".")[0] );
       decimals = ( opts.precision > 0 ? opts.separator : "" ) + ( val_str.split(".")[1] || "" );
-          
+   
       for ( i = 0; i < reverse_whole_part.length; i++ ) {
         if ( i % 3 === 0 && i !== 0 ) {
           whole_part += opts.delimiter;
         }
         whole_part += reverse_whole_part.charAt(i);
       }
-      whole_part = reverseString(whole_part);
-      
+      whole_part = reverseString( whole_part );
+
       if ( sign === "-" && opts.negativeFormat ) {
         return opts.negativeFormat.replace( "%n", whole_part + decimals ).replace( "%u", opts.unit );
       } else {
@@ -54,7 +55,7 @@
       }
     }
   });
-  
+
   $.fn.toCurrency = function( options ) {
     return this.each(function() {
       $(this).html( $.toCurrency( $(this).text(), options ) );
