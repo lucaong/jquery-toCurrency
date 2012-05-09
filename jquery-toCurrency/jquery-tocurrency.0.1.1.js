@@ -8,15 +8,11 @@
  */ 
 (function( $ ) {
   "use strict";
-  var reverseString = function( str ) {
-    return str.split("").reverse().join("");
-  };
-
   $.extend({
     toCurrency: function( val, opts ) {
-      var val_str, reverse_whole_part, decimals, i,
+      var decimals, whole_part,
           sign = "",
-          whole_part = "",
+          regexp = /(\d+)(\d{3})/,
           default_options = {
             precision: 2,
             delimiter: ",",
@@ -28,7 +24,7 @@
 
       opts = $.extend( default_options, opts );
 
-      val = parseFloat(val);
+      val = parseFloat( val );
       if( isNaN(val) ) {
         throw new Error( "toCurrency error: invalid number format " + val );
       }
@@ -36,17 +32,13 @@
         sign = "-";
       }
 
-      val_str = val.toFixed( opts.precision ).replace( "-", "" );
-      reverse_whole_part = reverseString( val_str.split(".")[0] );
-      decimals = ( opts.precision > 0 ? opts.separator : "" ) + ( val_str.split(".")[1] || "" );
+      val = val.toFixed( opts.precision ).replace( "-", "" );
+      whole_part = val.split(".")[0];
+      decimals = ( opts.precision > 0 ? opts.separator : "" ) + ( val.split(".")[1] || "" );
    
-      for ( i = 0; i < reverse_whole_part.length; i++ ) {
-        if ( i % 3 === 0 && i !== 0 ) {
-          whole_part += opts.delimiter;
-        }
-        whole_part += reverse_whole_part.charAt(i);
+      while ( regexp.test( whole_part ) ) {
+        whole_part = whole_part.replace( regexp, "$1" + opts.delimiter + "$2" );
       }
-      whole_part = reverseString( whole_part );
 
       if ( sign === "-" && opts.negativeFormat ) {
         return opts.negativeFormat.replace( "%n", whole_part + decimals ).replace( "%u", opts.unit );
